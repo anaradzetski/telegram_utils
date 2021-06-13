@@ -1,11 +1,12 @@
 from telegram.ext import CommandHandler, Filters
 from telegram.ext.messagehandler import MessageHandler
 from telegram_utils.registrator import HandlerRegistrator
-from telegram_utils.basic import get_updater
+from telegram_utils.basic import get_updater, typing
 
 REGISTRATOR = HandlerRegistrator()
 
 @REGISTRATOR.register(CommandHandler, 'check')
+@typing
 def check(update, context):
     context.bot.send_message(
         text='Bot is running.',
@@ -14,6 +15,7 @@ def check(update, context):
 
 
 @REGISTRATOR.register(MessageHandler, filters=~Filters.command & Filters.text)
+@typing
 def echo(update, context):
     context.bot.send_message(
         text=f'ECHO: {update.message.text}',
