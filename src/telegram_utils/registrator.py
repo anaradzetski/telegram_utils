@@ -4,7 +4,7 @@ from functools import wraps
 from telegram.ext import Handler, Dispatcher
 
 
-class HandlerRegister:
+class HandlerRegistrator:
     """Class for registering handlers by decorating callback functions"""
 
     def __init__(self):
