@@ -14,8 +14,7 @@ from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler
 )
-from telegram_utils.basic import typing, make_message_sender
-from telegram_utils.registrator import HandlerRegistrator
+from telegram_utils.basic import make_message_sender
 
 Button = TypeVar('Button', str, KeyboardButton, InlineKeyboardButton)
 KeyboardMarkup = TypeVar('KeyboardMarkup', ReplyKeyboardMarkup, InlineKeyboardMarkup)
@@ -114,5 +113,6 @@ class InlineRecursiveKeyboard:
         )
 
     def add(self, dispatcher: Dispatcher):
+        """Add to keyboard handlers to dispatcher"""
         dispatcher.add_handler(self._make_start_handler())
         dispatcher.add_handler(self._make_prefs_handler())
