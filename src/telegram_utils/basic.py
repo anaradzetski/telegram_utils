@@ -10,6 +10,7 @@ def get_updater(path_to_token: str) -> Updater:
     with open(path_to_token) as f:
         return Updater(re.match(r'\S+', f.read()).group(0))
 
+
 def typing(obj: Callable) -> Callable:
     """Decorator to perform typing action while sending message"""
     @wraps(obj)
@@ -21,3 +22,13 @@ def typing(obj: Callable) -> Callable:
         return obj(update, context, *args, **kwargs)
 
     return ret_callback
+
+
+def make_message_sender(**send_message_kwargs) -> Callable:
+    """Makes callback context which sends message on the effect"""
+    def message_sender(update: Update, context: CallbackContext):
+        context.bot.send_message(
+            chat_id = update.message.chat.id,
+            **send_message_kwargs
+        )
+    return message_sender
