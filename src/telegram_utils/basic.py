@@ -16,7 +16,7 @@ def typing(obj: Callable) -> Callable:
     @wraps(obj)
     def ret_callback(update: Update, context: CallbackContext, *args, **kwargs):
         context.bot.send_chat_action(
-            chat_id=update.message.chat_id,
+            chat_id=update.effective_chat.id,
             action=ChatAction.TYPING
         )
         return obj(update, context, *args, **kwargs)
@@ -29,7 +29,8 @@ def make_message_sender(send_message_kwargs) -> Callable:
     @typing
     def message_sender(update: Update, context: CallbackContext):
         context.bot.send_message(
-            chat_id = update.message.chat.id,
+            chat_id = update.effective_chat.id,
+            parse_mode = 'HTML',
             **send_message_kwargs
         )
     return message_sender

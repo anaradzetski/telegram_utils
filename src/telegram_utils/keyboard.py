@@ -60,7 +60,7 @@ class InlineRecursiveKeyboard:
                 callback_func = make_message_sender(
                     {
                         'text': pref,
-                        'markup': self._pref_markup(pref, node)
+                        'reply_markup': self._pref_markup(pref, node)
                     }
                 )
                 for key, val in node.items():
@@ -69,12 +69,12 @@ class InlineRecursiveKeyboard:
                 callback_func = make_message_sender(
                     {
                         'text': node,
-                        'markup': self._pref_markup(pref, {})
+                        'reply_markup': self._pref_markup(pref, {})
                     }
                 )
             else:
                 callback_func = node
-            self._callback_by_pref[self._full_pref] = callback_func
+            self._callback_by_pref[self._full_pref(pref)] = callback_func
 
     def _full_pref(self, pref: str):
         return f'{pref}_{id(self)}'
@@ -104,7 +104,7 @@ class InlineRecursiveKeyboard:
     def _make_prefs_handler(self):
         prefs = set(self._callback_by_pref.keys())
         def prefs_handler(update: Update, context: CallbackContext):
-            return self._callback_by_pref[update.callback_query](
+            return self._callback_by_pref[update.callback_query.data](
                 update, context
             )
         return CallbackQueryHandler(
