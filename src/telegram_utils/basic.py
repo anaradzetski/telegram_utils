@@ -24,7 +24,7 @@ def typing(obj: Callable) -> Callable:
     return ret_callback
 
 
-def make_message_sender(**send_message_kwargs) -> Callable:
+def make_message_sender(send_message_kwargs) -> Callable:
     """Makes callback context which sends message on the effect"""
     def message_sender(update: Update, context: CallbackContext):
         context.bot.send_message(
