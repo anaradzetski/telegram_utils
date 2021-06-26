@@ -1,8 +1,12 @@
+# pylint: disable=missing-function-docstring, missing-module-docstring
+import os
+
 from telegram.ext import CommandHandler, Filters
 from telegram.ext.messagehandler import MessageHandler
 from telegram_utils.registrator import HandlerRegistrator
 from telegram_utils.basic import get_updater, typing
 
+TOKEN_FILE = os.path.join(os.path.split(__file__)[0], 'data/token.txt')
 REGISTRATOR = HandlerRegistrator()
 
 @REGISTRATOR.register(CommandHandler, 'check')
@@ -24,8 +28,8 @@ def echo(update, context):
 
 
 if __name__ == '__main__':
-    updater = get_updater('token.txt')
+    updater = get_updater(TOKEN_FILE)
     dispatcher = updater.dispatcher
-    REGISTRATOR.add(dispatcher)
+    REGISTRATOR.add_to(dispatcher)
     updater.start_polling()
     updater.idle()

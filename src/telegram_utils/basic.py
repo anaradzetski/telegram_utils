@@ -30,7 +30,6 @@ def make_message_sender(send_message_kwargs) -> Callable:
     def message_sender(update: Update, context: CallbackContext):
         context.bot.send_message(
             chat_id = update.effective_chat.id,
-            parse_mode = 'HTML',
             **send_message_kwargs
         )
     return message_sender

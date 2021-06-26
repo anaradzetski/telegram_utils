@@ -40,7 +40,7 @@ class HandlerRegistrator:
 
         return ret_dec
 
-    def add(self, dispatcher: Dispatcher):
+    def add_to(self, dispatcher: Dispatcher):
         """Adds handlers to a dispathcher"""
         for handler in self.__handlers_lst:
             dispatcher.add_handler(handler)

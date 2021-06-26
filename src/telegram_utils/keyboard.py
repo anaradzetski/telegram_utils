@@ -69,11 +69,15 @@ class InlineRecursiveKeyboard:
                 callback_func = make_message_sender(
                     {
                         'text': node,
+                        'parse_mode': 'HTML',
                         'reply_markup': self._pref_markup(pref, {})
                     }
                 )
-            else:
+            elif callable(node):
                 callback_func = node
+            else:
+                print(node, callable(node))
+                raise ValueError('Invalid node type')
             self._callback_by_pref[self._full_pref(pref)] = callback_func
 
     def _full_pref(self, pref: str):
@@ -112,7 +116,7 @@ class InlineRecursiveKeyboard:
             pattern=lambda cq: cq in prefs
         )
 
-    def add(self, dispatcher: Dispatcher):
+    def add_to(self, dispatcher: Dispatcher):
         """Add to keyboard handlers to dispatcher"""
         dispatcher.add_handler(self._make_start_handler())
         dispatcher.add_handler(self._make_prefs_handler())
