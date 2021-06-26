@@ -5,7 +5,7 @@ from telegram import Update
 from telegram.ext import CallbackContext
 
 from telegram_utils.basic import get_updater
-from telegram_utils.keyboard import InlineRecursiveKeyboard
+from telegram_utils.keyboard import RecursiveKeyboard, InlineRecursiveKeyboard
 
 DATA_DIR = os.path.join(os.path.split(__file__)[0], 'data')
 TOKEN_FILE = os.path.join(DATA_DIR, 'token.txt')
@@ -28,11 +28,18 @@ keyboard_conf_dict = {
 def main():
     updater = get_updater(TOKEN_FILE)
     dispatcher = updater.dispatcher
-    keyboard = InlineRecursiveKeyboard(
+    keyboard = RecursiveKeyboard(
         conf_dct=keyboard_conf_dict,
-        start_command='start_cat'
+        start_command='start',
+        finish_command='finish'
     )
     keyboard.add_to(dispatcher)
+    inline_keyboard = InlineRecursiveKeyboard(
+        conf_dct=keyboard_conf_dict,
+        start_command='start_inline',
+        finish_command='finish_inline'
+    )
+    inline_keyboard.add_to(dispatcher)
     updater.start_polling()
     updater.idle()
 

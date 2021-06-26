@@ -1,5 +1,5 @@
 """Some basic utils ofently used in telegram projects"""
-from typing import Callable, Sequence, List
+from typing import Callable, Sequence, Union, List
 from functools import wraps, singledispatch
 
 from telegram import Update, ChatAction
@@ -36,33 +36,28 @@ def make_message_sender(send_message_kwargs) -> Callable:
 
 
 @singledispatch
-def reshape_sequence(sequence: Sequence, shape) -> List:
+def reshape_sequence(sequence: Sequence, shape: Union[int, Sequence]) -> List:
     """Used mostly for keyboard creating"""
-    raise ValueError('Invalid shape parameter.')
-
-
-@reshape_sequence.register
-def _(sequence: Sequence, shape: int) -> List:
-    if shape <= 0:
-        raise ValueError('Only positive shape is acceptable.')
-    return [sequence[i: i + shape] for i in range(0, len(sequence), shape)]
-
-
-@reshape_sequence.register
-def _(sequence: Sequence, shape: Sequence) -> List:
-    ret = []
-    cur_start = 0
-    try:
-        for row_len, idx in enumerate(shape):
-            if row_len == -1:
-                if idx != len(shape) -1:
-                    raise ValueError('-1 not at the end of shape array.')
-                ret.append(sequence[cur_start, -1])
-            elif row_len > 0:
-                ret.append(sequence[cur_start: row_len])
-                cur_start += row_len
-            else:
-                raise ValueError('Invalid row length.')
-    except KeyError as ex:
-        raise ValueError('Invalid shape array.') from ex
-    return ret
+    if isinstance(shape, int):
+        if shape <= 0:
+            raise ValueError('Only positive shape is acceptable.')
+        return [sequence[i: i + shape] for i in range(0, len(sequence), shape)]
+    elif isinstance(shape, Sequence):
+        ret = []
+        cur_start = 0
+        try:
+            for row_len, idx in enumerate(shape):
+                if row_len == -1:
+                    if idx != len(shape) -1:
+                        raise ValueError('-1 not at the end of shape array.')
+                    ret.append(sequence[cur_start, -1])
+                elif row_len > 0:
+                    ret.append(sequence[cur_start: row_len])
+                    cur_start += row_len
+                else:
+                    raise ValueError('Invalid row length.')
+        except KeyError as ex:
+            raise ValueError('Invalid shape array.') from ex
+        return ret
+    else:
+        raise ValueError('Invalid shape parameter.')
