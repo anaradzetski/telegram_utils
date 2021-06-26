@@ -6,7 +6,6 @@ setuptools.setup(
     author='Naradzetski Andrey',
     author_email='andrey.naradzetski@gmail.com',
     url='https://github.com/anaradzetski/telegram_recursive_keyboard',
-    package_dir={'': 'src'},
-    packages=setuptools.find_packages(where='src'),
+    packages=['telegram_utils'],
     python_requires='>=3.6'
 )
