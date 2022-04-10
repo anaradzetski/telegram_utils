@@ -9,10 +9,12 @@ from telegram_utils.keyboards import RecursiveKeyboard, InlineRecursiveKeyboard
 
 DATA_DIR = os.path.join(os.path.split(__file__)[0], 'data')
 TOKEN_FILE = os.path.join(DATA_DIR, 'token.txt')
-with open(os.path.join(DATA_DIR, 'cat_url.txt')) as f:
-    CAT_URL = f.read().strip()
+CAT_URL = "https://cataas.com/cat"
+
+
 def send_cat(update: Update, context: CallbackContext):
     context.bot.send_photo(update.effective_message.chat_id, CAT_URL)
+
 
 keyboard_conf_dict = {
     'cat is somewhere here': {
