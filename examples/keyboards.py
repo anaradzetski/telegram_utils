@@ -1,14 +1,12 @@
 # pylint: disable=missing-function-docstring, missing-module-docstring
-import os
-
 from telegram import Update
 from telegram.ext import CallbackContext
+from dotenv import load_dotenv
 
-from telegram_utils.basic import get_updater
+from telegram_utils.basic import init_updater
 from telegram_utils.keyboards import RecursiveKeyboard, InlineRecursiveKeyboard
 
-DATA_DIR = os.path.join(os.path.split(__file__)[0], 'data')
-TOKEN_FILE = os.path.join(DATA_DIR, 'token.txt')
+
 CAT_URL = "https://cataas.com/cat"
 
 
@@ -28,7 +26,8 @@ keyboard_conf_dict = {
 }
 
 def main():
-    updater = get_updater(TOKEN_FILE)
+    load_dotenv()
+    updater = init_updater()
     dispatcher = updater.dispatcher
     classes = (RecursiveKeyboard, InlineRecursiveKeyboard)
     commands = (
